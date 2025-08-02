@@ -1,0 +1,92 @@
+import matplotlib.pyplot as plt
+import numpy as np
+from ipywidgets import FloatSlider, VBox, HBox, Layout, HTML as WHTML, Output
+from IPython.display import display, clear_output
+
+# Create sliders
+v0_slider = FloatSlider(value=25, min=10, max=50, step=1, description='v₀ (m/s)')
+angle_slider = FloatSlider(value=45, min=10, max=80, step=1, description='θ (°)')
+time_slider = FloatSlider(value=1.5, min=0.1, max=4.0, step=0.1, description='Time t (s)')
+
+# Output for plot
+plot_geom = Output()
+
+# Function to update plot
+def update_geometric_plot(change=None):
+    with plot_geom:
+        clear_output(wait=True)
+        
+        v0 = v0_slider.value
+        theta_deg = angle_slider.value
+        theta = np.radians(theta_deg)
+        t = time_slider.value
+        g = 9.8
+        
+        # Position and velocity at time t
+        x = v0 * np.cos(theta) * t
+        y = v0 * np.sin(theta) * t - 0.5 * g * t**2
+        vx = v0 * np.cos(theta)
+        vy = v0 * np.sin(theta) - g * t
+        
+        fig, ax = plt.subplots(figsize=(6, 5))
+        
+        # Draw mass point
+        ax.scatter(x, y, color='red', s=80, zorder=5)
+        ax.text(x + 0.5, y + 1.0, 'mass point (m)', fontsize=12)
+
+        # Velocity vector (blue)
+        ax.arrow(x, y, 0.6*vx, 0.6*vy, head_width=0.4, head_length=0.5, color='blue', label='velocity')
+        ax.text(x + 0.6*vx + 0.5, y + 0.6*vy, 'v', fontsize=12, color='blue')
+
+        # Gravity vector (green)
+        ax.arrow(x, y, 0, -4, head_width=0.4, head_length=0.5, color='green')
+        ax.text(x, y - 4.8, 'mg', fontsize=12, color='green')
+
+        # Axes
+        ax.axhline(0, color='black', lw=1)
+        ax.axvline(0, color='black', lw=1)
+
+        ax.set_xlim(x - 5, x + 12)
+        ax.set_ylim(y - 10, y + 10)
+        ax.set_title(f"Zoom-In View (v₀ = {v0} m/s, θ = {theta_deg}°, t = {t} s)")
+        ax.set_xlabel("x (horizontal)")
+        ax.set_ylabel("y (vertical)")
+        ax.grid(True)
+        plt.tight_layout()
+        plt.show()
+
+# Initial plot
+update_geometric_plot()
+v0_slider.observe(update_geometric_plot, names='value')
+angle_slider.observe(update_geometric_plot, names='value')
+time_slider.observe(update_geometric_plot, names='value')
+
+# Left Column: Content + Sliders
+left_content = VBox([
+    WHTML("""
+    <h2 style="color:#2a4d69;">Stage 4: Geometric Stage – Zoomed Analysis</h2>
+    <p style="font-size:15px;">
+    Now that we've broken the motion into small parts (discretization), we zoom in on one point on the trajectory.
+    We place this point inside a <b>coordinate system</b> and identify the <b>forces and velocities</b> acting on it.
+    </p>
+    <ul style="font-size:15px;">
+        <li><b>x-axis:</b> horizontal motion with constant velocity</li>
+        <li><b>y-axis:</b> vertical motion affected by gravity</li>
+        <li><b>v:</b> total velocity vector at time t</li>
+        <li><b>mg:</b> force acting downward due to gravity</li>
+    </ul>
+    <p style="font-size:15px;">
+    This geometric model helps us apply Newton's Second Law in two dimensions and derive equations of motion.
+    Use the sliders to adjust the speed, angle, and the time point to see changes in forces and vectors.
+    </p>
+    """),
+    v0_slider, angle_slider, time_slider
+], layout=Layout(width='50%'))
+
+# Right Column: Plot
+right_plot = VBox([plot_geom], layout=Layout(width='50%'))
+
+# Combine into two-column layout
+display(HBox([left_content, right_plot]))
+
+ 

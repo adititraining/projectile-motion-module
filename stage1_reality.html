@@ -1,0 +1,34 @@
+from IPython.display import display, HTML
+
+html_reality = """
+<div style="display: flex; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 16px; line-height: 1.6;">
+
+  <!-- Left Column: Explanation -->
+  <div style="width: 55%; padding-right: 30px;">
+    <h2 style="color: #2a4d69; border-bottom: 2px solid #ccc;">Stage 1: Reality</h2>
+    <h3 style="margin-top: 10px;">What kind of motion does a projectile follow?</h3>
+    <p>
+      Imagine a <strong>cannonball</strong> fired from a fort. After the initial explosive push, it rises, slows, and falls — all while tracing a curved path through the air.
+    </p>
+    <p>
+      Now consider a <strong>cricketer</strong> on the boundary throwing the ball toward the wicketkeeper, or a <strong>footballer</strong> kicking the ball across the field.
+      In all these cases, once the object is in the air, it is under the influence of only one force: <strong>gravity</strong>.
+    </p>
+    <p>
+      The motion that follows is called <strong>projectile motion</strong>. The object moves in two dimensions — horizontally and vertically — and its path is typically a parabola.
+      Our goal is to model this motion mathematically so we can predict the object's position at any time.
+    </p>
+  </div>
+
+  <!-- Right Column: Diagram -->
+  <div style="width: 45%;">
+    <img src="projectile_motion_diagram.png"
+         alt="Diagram of different types of projectile motion"
+         style="width: 100%; border-radius: 8px; box-shadow: 0px 0px 8px rgba(0,0,0,0.2);">
+    <p style="font-size: 13px; text-align: center; margin-top: 8px;">Image: Different types of projectile motion – horizontal, vertical, and angled launches</p>
+  </div>
+
+</div>
+"""
+
+display(HTML(html_reality))

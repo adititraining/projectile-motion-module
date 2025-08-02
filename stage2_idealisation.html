@@ -1,0 +1,75 @@
+import matplotlib.pyplot as plt
+import numpy as np
+import ipywidgets as widgets
+from IPython.display import display, clear_output
+from ipywidgets import HBox, VBox, Output, Layout
+
+# Create sliders
+v0_slider = widgets.FloatSlider(value=20, min=5, max=50, step=1, description='v₀ (m/s):')
+angle_slider = widgets.FloatSlider(value=45, min=10, max=80, step=1, description='θ (°):')
+
+# Create output widget for the plot
+plot_output = Output()
+
+# Define function to update plot
+def update_plot(change=None):
+    with plot_output:
+        clear_output(wait=True)
+
+        v0 = v0_slider.value
+        angle = np.radians(angle_slider.value)
+        g = 9.8
+
+        t_flight = 2 * v0 * np.sin(angle) / g
+        t = np.linspace(0, t_flight, 300)
+        x = v0 * np.cos(angle) * t
+        y = v0 * np.sin(angle) * t - 0.5 * g * t**2
+
+        fig, ax = plt.subplots(figsize=(5, 3.5))
+        ax.plot(x, y, color='darkcyan', linewidth=2)
+        ax.set_title(f"Projectile Path\n(v₀ = {v0} m/s, θ = {angle_slider.value}°)")
+        ax.set_xlabel("Horizontal Distance (m)")
+        ax.set_ylabel("Vertical Height (m)")
+        ax.set_xlim(0, max(x)+5)
+        ax.set_ylim(0, max(y)+5)
+        ax.grid(True)
+        plt.tight_layout()
+        plt.show()
+
+# Initial plot rendering
+update_plot()
+
+# Re-render on slider change
+v0_slider.observe(update_plot, names='value')
+angle_slider.observe(update_plot, names='value')
+
+# Left column: Text + sliders
+left_column = VBox([
+    widgets.HTML("""
+    <h2 style="color:#2a4d69;">Stage 2: Idealization</h2>
+    <p style="font-size:15px;">
+    Let's simplify the real-world motion into a form that physics can model easily:
+    </p>
+     <ul>
+      <li>Treat object as a <strong>point mass</strong></li>
+      <li>Ignore <strong>air resistance</strong></li>
+      <li>Assume <strong>uniform gravity</strong> (9.8 m/s²)</li>
+      <li>2D motion in a flat field</li>
+    </ul>
+    <p style="font-size:15px;">
+    Use the sliders below to adjust <b>initial speed</b> and <b>angle of projection</b>.
+    Observe the idealized parabolic path.
+    </p>
+    """),
+    v0_slider,
+    angle_slider
+], layout=Layout(width='50%'))
+
+# Right column: live plot
+right_column = VBox([plot_output], layout=Layout(width='50%'))
+
+# Combine both columns horizontally
+two_column_layout = HBox([left_column, right_column])
+
+# Display the final layout
+display(two_column_layout)
