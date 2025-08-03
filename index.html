@@ -1,111 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Projectile Motion - Interactive Module</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Projectile Motion – Stage 1: Reality</title>
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: Arial, sans-serif;
       margin: 0;
-      padding: 0;
-      background-color: #f4f7fa;
-      color: #333;
-    }
-    header {
-      background-color: #2a4d69;
-      color: white;
-      padding: 20px 40px;
-      text-align: center;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 28px;
-    }
-    main {
-      padding: 40px;
-      max-width: 900px;
-      margin: auto;
-    }
-    section {
-      margin-bottom: 40px;
-      background-color: #fff;
       padding: 20px;
-      border-radius: 10px;
+      background: #f9f9f9;
+    }
+    .container {
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+    }
+    .left-column, .right-column {
+      width: 50%;
+      padding: 20px;
+      background: white;
+      border-radius: 8px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    section h2 {
-      color: #2a4d69;
-      margin-top: 0;
+    img {
+      max-width: 100%;
+      height: auto;
     }
-    section p {
-      font-size: 16px;
-      line-height: 1.6;
+    .slider-container {
+      margin-top: 20px;
     }
-    .button {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 10px 20px;
-      background-color: #2a4d69;
-      color: white;
-      border-radius: 5px;
-      text-decoration: none;
-      transition: background 0.3s;
-    }
-    .button:hover {
-      background-color: #1d3557;
-    }
-    footer {
-      text-align: center;
-      padding: 20px;
-      background-color: #eaeaea;
-      font-size: 14px;
+    .slider-label {
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
+    <!-- Top Navigation Bar -->
+<nav class="top-nav">
+  <a href="index.html">🏠 Home</a>
+  <a href="stage1_reality.html">Stage 1: Reality</a>
+  <a href="stage2_idealisation.html">Stage 2: Idealisation</a>
+  <a href="stage3_discretisation.html">Stage 3: Discretisation</a>
+  <a href="stage4_geometric.html">Stage 4: Geometric</a>
+  <a href="stage5_algebraic.html">Stage 5: Algebraic</a>
+</nav>
 
-<header>
-  <h1>Understanding Projectile Motion – An Interactive Journey</h1>
-</header>
+  <h1>Stage 1: Reality</h1>
 
-<main>
+  <div class="container">
+    <!-- LEFT COLUMN: Description & slider -->
+    <div class="left-column">
+      <p>
+        Imagine a cannon firing a ball into the air. The ball follows a curved path – a <strong>projectile motion</strong>.
+        This happens when an object is launched at an angle with some initial velocity.
+      </p>
+      <p>
+        Real-life examples include:
+        <ul>
+          <li>Cricketer throwing a ball</li>
+          <li>Footballer kicking a ball</li>
+          <li>Missile fired from a cannon</li>
+        </ul>
+      </p>
 
-  <section>
-    <h2>Stage 1: Reality</h2>
-    <p>Explore how projectile motion appears in real-life scenarios — from cannonballs to cricket balls — and understand the key physical idea behind curved motion under gravity.</p>
-    <a href="stage1_reality.html" class="button">Explore Reality</a>
-  </section>
+      <div class="slider-container">
+        <label for="angleSlider" class="slider-label">Launch Angle (°): <span id="angleValue">45</span></label><br>
+        <input type="range" id="angleSlider" min="10" max="80" value="45" />
+      </div>
+    </div>
 
-  <section>
-    <h2>Stage 2: Idealisation</h2>
-    <p>Simplify the complex world into physics models: point mass, no air resistance, and uniform gravity. Play with sliders to visualize the parabolic path.</p>
-    <a href="stage2_idealisation.html" class="button">Explore Idealisation</a>
-  </section>
+    <!-- RIGHT COLUMN: Image -->
+    <div class="right-column">
+      <img id="projectileImage" src="images/projectile_45deg.jpg" alt="Projectile motion image" />
+    </div>
+  </div>
 
-  <section>
-    <h2>Stage 3: Discretisation</h2>
-    <p>Break continuous motion into discrete steps to analyze it computationally. See how snapshots of motion reveal structure and prepare us for simulation.</p>
-    <a href="stage3_discretisation.html" class="button">Explore Discretisation</a>
-  </section>
+  <script>
+    const slider = document.getElementById('angleSlider');
+    const angleValue = document.getElementById('angleValue');
+    const image = document.getElementById('projectileImage');
 
-  <section>
-    <h2>Stage 4: Geometric Stage</h2>
-    <p>Zoom in on a point in motion to examine vectors of velocity and force. Apply Newton's Laws in 2D to understand the structure of motion deeply.</p>
-    <a href="stage4_geometric.html" class="button">Explore Geometric Stage</a>
-  </section>
+    slider.addEventListener('input', () => {
+      const angle = slider.value;
+      angleValue.textContent = angle;
 
-  <section>
-    <h2>Stage 5: Algebraic Stage</h2>
-    <p>Mathematically derive the parabolic equation of motion using algebra and trigonometry. Follow step-by-step visual reasoning from Newton’s law to the equation.</p>
-    <a href="stage5_algebraic.html" class="button">Explore Algebraic Stage</a>
-  </section>
-
-</main>
-
-<footer>
-  &copy; 2025 Interactive Physics | Created by Dr. Aditi Sharma
-</footer>
-
+      // Replace with your own angle-specific images
+      if (angle < 25) {
+        image.src = "images/projectile_20deg.jpg";
+      } else if (angle < 45) {
+        image.src = "images/projectile_30deg.jpg";
+      } else if (angle < 60) {
+        image.src = "images/projectile_45deg.jpg";
+      } else {
+        image.src = "images/projectile_60deg.jpg";
+      }
+    });
+  </script>
 </body>
 </html>
