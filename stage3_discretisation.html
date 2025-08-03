@@ -1,127 +1,113 @@
-import matplotlib.pyplot as plt
-import numpy as np
-from IPython.display import display, HTML
-from ipywidgets import VBox, HBox, Layout, HTML as WHTML, Output
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Stage 3 – Discretization</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .container {
+      display: flex;
+      gap: 40px;
+      margin-top: 30px;
+      font-size: 16px;
+      line-height: 1.6;
+    }
 
-# --- Plot preparation ---
-discretization_plot = Output()
+    .left-col {
+      width: 55%;
+      padding-right: 30px;
+    }
 
-with discretization_plot:
-    # Parameters for plotting
-    v0 = 25
-    angle = np.radians(45)
-    g = 9.8
-    t_total = 2 * v0 * np.sin(angle) / g
-    t_points = np.linspace(0, t_total, 7)  # 7 discrete time steps
+    .right-col {
+      width: 45%;
+    }
 
-    x = v0 * np.cos(angle) * t_points
-    y = v0 * np.sin(angle) * t_points - 0.5 * g * t_points**2
-    vx = v0 * np.cos(angle)
-    vy = v0 * np.sin(angle) - g * t_points
+    .right-col img {
+      width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.2);
+    }
 
-    fig, ax = plt.subplots(figsize=(6, 4))
-    ax.plot(x, y, 'k--', alpha=0.5, label='Full Trajectory')
-    ax.scatter(x, y, color='teal', zorder=5)
+    .caption {
+      font-size: 13px;
+      text-align: center;
+      margin-top: 8px;
+    }
 
-    for i in range(len(x)):
-        ax.arrow(x[i], y[i], 0.5 * vx, 0.5 * vy[i],
-                 head_width=0.5, head_length=0.5, fc='orange', ec='orange')
+    .stage-nav {
+      margin-top: 40px;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+    }
 
-    ax.set_title("Discretizing the Motion: Mass Points & Velocities")
-    ax.set_xlabel("Horizontal Distance (m)")
-    ax.set_ylabel("Vertical Height (m)")
-    ax.set_xlim(0, max(x) + 5)
-    ax.set_ylim(0, max(y) + 5)
-    ax.grid(True)
-    plt.tight_layout()
-    plt.show()
+    .nav-link {
+      text-decoration: none;
+      color: #2a4d69;
+      font-weight: bold;
+    }
 
-# --- Text explanation ---
-text_block = WHTML("""
-<h2 style="color:#2a4d69;">Stage 3: Discretization</h2>
-<p style="font-size:15px;">
-In real-world physics, many systems are continuous — meaning they change smoothly in time and space. 
-But to analyze or simulate them effectively, we <b>discretize</b> them: 
-we break the motion or object into a set of small, manageable parts.
-</p>
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      padding: 10px;
+      background-color: #f2f2f2;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
 
-<p style="font-size:15px;">
-For projectile motion, this means thinking of the path as a sequence of small steps or mass points, 
-each with its own velocity vector. Instead of modeling the continuous curve directly, 
-we work with snapshots of the motion at distinct times.
-</p>
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <a href="index.html">🏠 Home</a>
+    <a href="stage1_reality.html">Stage 1: Reality</a>
+    <a href="stage2_idealisation.html">Stage 2: Idealisation</a>
+    <a href="stage3_discretization.html">Stage 3: Discretization</a>
+    <a href="stage4_geometric.html">Stage 4: Geometric</a>
+    <a href="stage5_algebraic.html">Stage 5: Algebraic</a>
+  </nav>
 
-<p style="font-size:15px;">
-Discretization helps us form a bridge to calculus (for deriving differential equations) 
-or to numerical simulation (for computer models).
-</p>
-""")
+  <!-- Page Content -->
+  <main class="container">
+    <!-- Left Column -->
+    <div class="left-col">
+      <h2 style="color:#2a4d69;">Stage 3: Discretization</h2>
+      <p>
+        In real-world physics, many systems are continuous — meaning they change smoothly in time and space.
+        But to analyze or simulate them effectively, we <strong>discretize</strong> them:
+        we break the motion or object into a set of small, manageable parts.
+      </p>
 
-# Layout in two columns
-left_column = VBox([text_block], layout=Layout(width='50%'))
-right_column = VBox([discretization_plot], layout=Layout(width='50%'))
+      <p>
+        For projectile motion, this means thinking of the path as a sequence of small steps or mass points,
+        each with its own velocity vector. Instead of modeling the continuous curve directly,
+        we work with snapshots of the motion at distinct times.
+      </p>
 
-display(HBox([left_column, right_column]))import matplotlib.pyplot as plt
-import numpy as np
-from IPython.display import display, HTML
-from ipywidgets import VBox, HBox, Layout, HTML as WHTML, Output
+      <p>
+        Discretization helps us form a bridge to calculus (for deriving differential equations)
+        or to numerical simulation (for computer models).
+      </p>
+    </div>
 
-# --- Plot preparation ---
-discretization_plot = Output()
+    <!-- Right Column -->
+    <div class="right-col">
+      <img src="discretization_plot.png" alt="Discretized projectile motion with velocity vectors">
+      <p class="caption">Plot: Discretized projectile motion with mass points and velocity vectors.</p>
+    </div>
+  </main>
 
-with discretization_plot:
-    # Parameters for plotting
-    v0 = 25
-    angle = np.radians(45)
-    g = 9.8
-    t_total = 2 * v0 * np.sin(angle) / g
-    t_points = np.linspace(0, t_total, 7)  # 7 discrete time steps
+  <!-- Navigation Between Stages -->
+  <div class="stage-nav">
+    <a class="nav-link" href="stage2_idealisation.html">&larr; Stage 2: Idealisation</a>
+    <a class="nav-link" href="stage4_geometric.html">Stage 4: Geometric &rarr;</a>
+  </div>
 
-    x = v0 * np.cos(angle) * t_points
-    y = v0 * np.sin(angle) * t_points - 0.5 * g * t_points**2
-    vx = v0 * np.cos(angle)
-    vy = v0 * np.sin(angle) - g * t_points
+  <!-- Footer -->
+  <footer>
+    &copy; 2025 Interactive Physics | Created by Dr. Aditi Sharma
+  </footer>
 
-    fig, ax = plt.subplots(figsize=(6, 4))
-    ax.plot(x, y, 'k--', alpha=0.5, label='Full Trajectory')
-    ax.scatter(x, y, color='teal', zorder=5)
-
-    for i in range(len(x)):
-        ax.arrow(x[i], y[i], 0.5 * vx, 0.5 * vy[i],
-                 head_width=0.5, head_length=0.5, fc='orange', ec='orange')
-
-    ax.set_title("Discretizing the Motion: Mass Points & Velocities")
-    ax.set_xlabel("Horizontal Distance (m)")
-    ax.set_ylabel("Vertical Height (m)")
-    ax.set_xlim(0, max(x) + 5)
-    ax.set_ylim(0, max(y) + 5)
-    ax.grid(True)
-    plt.tight_layout()
-    plt.show()
-
-# --- Text explanation ---
-text_block = WHTML("""
-<h2 style="color:#2a4d69;">Stage 3: Discretization</h2>
-<p style="font-size:15px;">
-In real-world physics, many systems are continuous — meaning they change smoothly in time and space. 
-But to analyze or simulate them effectively, we <b>discretize</b> them: 
-we break the motion or object into a set of small, manageable parts.
-</p>
-
-<p style="font-size:15px;">
-For projectile motion, this means thinking of the path as a sequence of small steps or mass points, 
-each with its own velocity vector. Instead of modeling the continuous curve directly, 
-we work with snapshots of the motion at distinct times.
-</p>
-
-<p style="font-size:15px;">
-Discretization helps us form a bridge to calculus (for deriving differential equations) 
-or to numerical simulation (for computer models).
-</p>
-""")
-
-# Layout in two columns
-left_column = VBox([text_block], layout=Layout(width='50%'))
-right_column = VBox([discretization_plot], layout=Layout(width='50%'))
-
-display(HBox([left_column, right_column]))
+</body>
+</html>

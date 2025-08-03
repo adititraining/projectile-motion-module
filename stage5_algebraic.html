@@ -1,73 +1,108 @@
-import numpy as np
-import matplotlib.pyplot as plt
-from ipywidgets import interact, FloatSlider, VBox, HBox, Layout, HTML
-from IPython.display import display
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Stage 4 – Graphical Validation</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f9f9f9;
+      color: #222;
+    }
 
-# Function to calculate and plot trajectory
-def plot_trajectory(v0, angle_deg):
-    g = 9.8  # gravity
-    theta = np.radians(angle_deg)
+    .container {
+      display: flex;
+      flex-direction: row;
+      gap: 40px;
+      margin-top: 30px;
+    }
 
-    # Time of flight
-    t_flight = 2 * v0 * np.sin(theta) / g
-    t = np.linspace(0, t_flight, num=300)
+    .left-col {
+      width: 50%;
+      font-size: 16px;
+      line-height: 1.6;
+    }
 
-    # X and Y components
-    x = v0 * np.cos(theta) * t
-    y = v0 * np.sin(theta) * t - 0.5 * g * t**2
+    .right-col {
+      width: 50%;
+    }
 
-    # Maximum height and range
-    h_max = (v0**2 * np.sin(theta)**2) / (2 * g)
-    R = v0**2 * np.sin(2 * theta) / g
+    .right-col img {
+      width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
 
-     # Equation to show
-    eq_text = (
-        r"$y = x \cdot \tan(\theta) - \frac{g \cdot x^2}{2 v_0^2 \cdot \cos^2(\theta)}$" + "\n\n" +
-        rf"$v_0 = {v0} \, m/s$, $\theta = {angle_deg}^\circ$" + "\n\n" +
-        rf"$H_{{max}} = {h_max:.2f} \, m$, $Range = {R:.2f} \, m$"
-    )
+    h2, h4 {
+      color: #2a4d69;
+    }
 
-    # Create plot
-    fig, ax = plt.subplots(figsize=(7, 4))
-    ax.plot(x, y, label="Projectile Path", color='crimson')
-    ax.set_xlabel("Horizontal Distance (m)")
-    ax.set_ylabel("Vertical Height (m)")
-    ax.set_title("Projectile Motion Trajectory")
-    ax.grid(True)
-    ax.legend()
+    .equation-box {
+      background-color: #eef;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-family: monospace;
+      display: inline-block;
+      margin: 12px 0;
+    }
 
-    # Annotate max height and range
-    ax.plot([R/2], [h_max], 'bo')
-    ax.text(R/2, h_max + 0.5, f"Hmax = {h_max:.2f} m", ha='center')
-    ax.axhline(0, color='black', lw=1)
-    ax.axvline(R, color='gray', linestyle='--')
-    ax.text(R, 0, f"Range = {R:.2f} m", ha='center', va='bottom')
- plt.tight_layout()
-    plt.show()
+    .stage-nav {
+      margin-top: 40px;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 10px;
+    }
 
-    # Column 1 text content
-    theory_html = HTML(
-        f"""
-        <div style="font-size: 16px; line-height:1.6; padding-right: 20px;">
-        <h4><u>Graphical Validation Stage</u></h4>
-        <p>We now validate the derived trajectory equation by simulating the projectile motion graphically.</p>
-        <p><b>Equation:</b><br>
-        <span style='font-family:monospace; background-color: #eef; padding: 4px 6px; border-radius: 4px; display:inline-block;'>
-        y = x·tan(θ) - (g·x²)/(2·v₀²·cos²(θ))
-        </span></p>
-        <p>Use the sliders below to explore how changing the <b>initial speed</b> and <b>launch angle</b> affects the projectile's path.</p>
-        </div>
-        """
-    )
+    .nav-link {
+      text-decoration: none;
+      color: #2a4d69;
+      font-weight: bold;
+    }
 
-    # Layout both columns
-    left_col = VBox([theory_html, sliders_box], layout=Layout(width='50%'))
-    right_col = VBox([], layout=Layout(width='50%'))
-    display(HBox([left_col, right_col]))
-    # Sliders for user interaction
-v0_slider = FloatSlider(value=30, min=5, max=100, step=1, description='v₀ (m/s)')
-theta_slider = FloatSlider(value=45, min=10, max=80, step=1, description='θ (degrees)')
-sliders_box = VBox([v0_slider, theta_slider])
+    footer {
+      text-align: center;
+      padding: 10px;
+      font-size: 14px;
+      margin-top: 40px;
+      background: #eee;
+    }
+  </style>
+</head>
+<body>
 
-# Interactive function
-interact(plot_trajectory, v0=v0_slider, angle_deg=theta_slider)
+  <h2>Stage 4: Graphical Validation</h2>
+
+  <div class="container">
+    <div class="left-col">
+      <h4><u>Graphical Validation Stage</u></h4>
+      <p>We now validate the derived trajectory equation by simulating the projectile motion graphically.</p>
+      
+      <p><strong>Equation:</strong></p>
+      <div class="equation-box">
+        y = x · tan(θ) − (g · x²) / (2 · v₀² · cos²(θ))
+      </div>
+
+      <p>Use the interactive plot (linked below) to explore how changing the <b>initial speed</b> and <b>launch angle</b> affects the projectile's path.</p>
+      
+      <p><a href="graphical_validation_interactive.html">👉 Try the Interactive Version</a> (Voila/Jupyter hosted)</p>
+    </div>
+
+    <div class="right-col">
+      <img src="projectile_graphical_plot.png" alt="Projectile Trajectory Plot">
+    </div>
+  </div>
+
+  <div class="stage-nav">
+    <a class="nav-link" href="stage3_discretisation.html">&larr; Stage 3: Discretisation</a>
+    <a class="nav-link" href="stage5_algebraic.html">Stage 5: Algebraic &rarr;</a>
+  </div>
+
+  <footer>
+    &copy; 2025 Interactive Physics | Created by Dr. Aditi Sharma
+  </footer>
+
+</body>
+</html>

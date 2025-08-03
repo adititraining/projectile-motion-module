@@ -1,92 +1,110 @@
-import matplotlib.pyplot as plt
-import numpy as np
-from ipywidgets import FloatSlider, VBox, HBox, Layout, HTML as WHTML, Output
-from IPython.display import display, clear_output
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Stage 4 – Geometric Stage</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 30px;
+    }
 
-# Create sliders
-v0_slider = FloatSlider(value=25, min=10, max=50, step=1, description='v₀ (m/s)')
-angle_slider = FloatSlider(value=45, min=10, max=80, step=1, description='θ (°)')
-time_slider = FloatSlider(value=1.5, min=0.1, max=4.0, step=0.1, description='Time t (s)')
+    .container {
+      display: flex;
+      gap: 40px;
+      font-size: 16px;
+      line-height: 1.6;
+    }
 
-# Output for plot
-plot_geom = Output()
+    .left-col {
+      width: 50%;
+    }
 
-# Function to update plot
-def update_geometric_plot(change=None):
-    with plot_geom:
-        clear_output(wait=True)
-        
-        v0 = v0_slider.value
-        theta_deg = angle_slider.value
-        theta = np.radians(theta_deg)
-        t = time_slider.value
-        g = 9.8
-        
-        # Position and velocity at time t
-        x = v0 * np.cos(theta) * t
-        y = v0 * np.sin(theta) * t - 0.5 * g * t**2
-        vx = v0 * np.cos(theta)
-        vy = v0 * np.sin(theta) - g * t
-        
-        fig, ax = plt.subplots(figsize=(6, 5))
-        
-        # Draw mass point
-        ax.scatter(x, y, color='red', s=80, zorder=5)
-        ax.text(x + 0.5, y + 1.0, 'mass point (m)', fontsize=12)
+    .right-col {
+      width: 50%;
+    }
 
-        # Velocity vector (blue)
-        ax.arrow(x, y, 0.6*vx, 0.6*vy, head_width=0.4, head_length=0.5, color='blue', label='velocity')
-        ax.text(x + 0.6*vx + 0.5, y + 0.6*vy, 'v', fontsize=12, color='blue')
+    .right-col img {
+      width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.2);
+    }
 
-        # Gravity vector (green)
-        ax.arrow(x, y, 0, -4, head_width=0.4, head_length=0.5, color='green')
-        ax.text(x, y - 4.8, 'mg', fontsize=12, color='green')
+    .caption {
+      font-size: 13px;
+      text-align: center;
+      margin-top: 8px;
+    }
 
-        # Axes
-        ax.axhline(0, color='black', lw=1)
-        ax.axvline(0, color='black', lw=1)
+    .stage-nav {
+      margin-top: 40px;
+      display: flex;
+      justify-content: space-between;
+    }
 
-        ax.set_xlim(x - 5, x + 12)
-        ax.set_ylim(y - 10, y + 10)
-        ax.set_title(f"Zoom-In View (v₀ = {v0} m/s, θ = {theta_deg}°, t = {t} s)")
-        ax.set_xlabel("x (horizontal)")
-        ax.set_ylabel("y (vertical)")
-        ax.grid(True)
-        plt.tight_layout()
-        plt.show()
+    .nav-link {
+      text-decoration: none;
+      color: #2a4d69;
+      font-weight: bold;
+    }
 
-# Initial plot
-update_geometric_plot()
-v0_slider.observe(update_geometric_plot, names='value')
-angle_slider.observe(update_geometric_plot, names='value')
-time_slider.observe(update_geometric_plot, names='value')
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      padding: 10px;
+      background-color: #f2f2f2;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
 
-# Left Column: Content + Sliders
-left_content = VBox([
-    WHTML("""
-    <h2 style="color:#2a4d69;">Stage 4: Geometric Stage – Zoomed Analysis</h2>
-    <p style="font-size:15px;">
-    Now that we've broken the motion into small parts (discretization), we zoom in on one point on the trajectory.
-    We place this point inside a <b>coordinate system</b> and identify the <b>forces and velocities</b> acting on it.
-    </p>
-    <ul style="font-size:15px;">
+  <main class="container">
+    <!-- Left Column -->
+    <div class="left-col">
+      <h2 style="color:#2a4d69;">Stage 4: Geometric Stage – Zoomed Analysis</h2>
+      <p>
+        Now that we've broken the motion into small parts (discretization), we zoom in on one point on the trajectory.
+        We place this point inside a <b>coordinate system</b> and identify the <b>forces and velocities</b> acting on it.
+      </p>
+      <ul>
         <li><b>x-axis:</b> horizontal motion with constant velocity</li>
         <li><b>y-axis:</b> vertical motion affected by gravity</li>
         <li><b>v:</b> total velocity vector at time t</li>
         <li><b>mg:</b> force acting downward due to gravity</li>
-    </ul>
-    <p style="font-size:15px;">
-    This geometric model helps us apply Newton's Second Law in two dimensions and derive equations of motion.
-    Use the sliders to adjust the speed, angle, and the time point to see changes in forces and vectors.
-    </p>
-    """),
-    v0_slider, angle_slider, time_slider
-], layout=Layout(width='50%'))
+      </ul>
+      <p>
+        This geometric model helps us apply Newton's Second Law in two dimensions and derive equations of motion.
+        Use the sliders to adjust the speed, angle, and the time point to see changes in forces and vectors.
+      </p>
+      <p>
+        <b>Note:</b> This is a static version. For full interactivity, launch the notebook using Voilà:
+      </p>
+      <p>
+        <a href="geometric_stage_voila_embed.html">👉 Try the Interactive Version</a>
+      </p>
+    </div>
 
-# Right Column: Plot
-right_plot = VBox([plot_geom], layout=Layout(width='50%'))
+    <!-- Right Column -->
+    <div class="right-col">
+      <img src="geometric_stage_plot.png" alt="Zoomed view of mass point with forces and velocity vectors">
+      <p class="caption">Figure: Zoomed view showing forces and velocity at time t.</p>
+    </div>
+  </main>
 
-# Combine into two-column layout
-display(HBox([left_content, right_plot]))
+  <!-- Stage Navigation -->
+  <div class="stage-nav">
+    <a class="nav-link" href="stage3_discretisation.html">&larr; Stage 3: Discretisation</a>
+    <a class="nav-link" href="stage5_algebraic.html">Stage 5: Algebraic &rarr;</a>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    &copy; 2025 Interactive Physics | Created by Dr. Aditi Sharma
+  </footer>
+
+</body>
+</html>
+
 
  
