@@ -1,0 +1,87 @@
+/* Global styles */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f7fa;
+  color: #333;
+}
+
+/* Header */
+header {
+  background-color: #2a4d69;
+  color: white;
+  padding: 20px 40px;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 28px;
+}
+
+/* Main content */
+main {
+  padding: 40px;
+  max-width: 900px;
+  margin: auto;
+}
+
+/* Section cards */
+section {
+  margin-bottom: 40px;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+section h2 {
+  color: #2a4d69;
+  margin-top: 0;
+}
+
+section p {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* Buttons */
+.button {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #2a4d69;
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.button:hover {
+  background-color: #1d3557;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 20px;
+  background-color: #eaeaea;
+  font-size: 14px;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  main {
+    padding: 20px;
+  }
+
+  section {
+    padding: 15px;
+  }
+
+  .button {
+    padding: 8px 16px;
+  }
+}
